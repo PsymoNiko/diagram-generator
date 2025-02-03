@@ -1,0 +1,4 @@
+digraph {
+	slaam [label=slaam]
+	boro [label=boro]
+}
