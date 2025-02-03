@@ -1,5 +1,0 @@
-digraph {
-	one [label=one]
-	tiw [label=tiw]
-	one -> tiw
-}

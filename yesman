@@ -1,5 +1,0 @@
-digraph {
-	yes [label=yes]
-	no [label=no]
-	yes -> no
-}
