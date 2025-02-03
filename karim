@@ -1,9 +1,0 @@
-digraph {
-	one [label=one]
-	ali [label=ali]
-	mamad [label=mamad]
-	javad [label=javad]
-	one -> ali
-	ali -> one
-	ali -> mamad
-}
