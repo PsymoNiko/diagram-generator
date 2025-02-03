@@ -1,44 +1,18 @@
 from graphviz import Digraph
+from pyfiglet import Figlet
 
 def create_diagram():
-    print("\n### Network Diagram Generator ###\n")
-    dot = Digraph(format="png")
-    nodes = {}
-    comments = {}
+    fig = Figlet(font='slant')
+    print(fig.renderText("Network Diagram"))
     
-    # Adding nodes
-    node_list = []
-    while True:
-        title = input("Enter a node name (or type 'done' to finish adding nodes): ").strip()
-        if title.lower() == "done":
-            break
-        if title.startswith("-") and title.endswith(";"):
-            try:
-                node_number = int(title[1:-1])
-                if node_number in nodes:
-                    print(f"Removing node {nodes[node_number]}")
-                    del nodes[node_number]
-                    node_list = [n for n in node_list if n != nodes.get(node_number, "")]
-                    comments.pop(node_number, None)
-                else:
-                    print("Invalid node number! Try again.")
-            except ValueError:
-                print("Invalid input format! Use -number; to remove a node.")
-            continue
-        
-        if title in nodes.values():
-            print("Node already exists! Try another name.")
-            continue
-        
-        node_number = len(node_list) + 1
-        nodes[node_number] = title
-        node_list.append(title)
-        dot.node(title, title)
+    dot = Digraph(format="png")
+    nodes = {1: "ali", 2: "mamad"}
+    comments = {1: ["salam"], 2: []}
     
     while True:
         print("\nOptions:")
-        print("1. View added titles")
-        print("2. Add comments/descriptions")
+        print("1. View added nodes")
+        print("2. Add or remove comments")
         print("3. Define connections between nodes")
         print("4. Generate diagram and exit")
         
@@ -50,37 +24,47 @@ def create_diagram():
                 print(f"{num}: {name}")
         
         elif choice == "2":
-            print("\nNow define comments for nodes.")
+            print("\nNow manage comments for nodes.")
             while True:
-                command = input("Enter a comment command (or type 'done' to return to menu): ").strip()
+                print("\nCurrent Nodes:")
+                for num, name in nodes.items():
+                    print(f"{num}: {name}")
+                
+                command = input("Enter a command (or type 'done' to return to menu): ").strip()
                 if command.lower() == "done":
                     break
                 
-                if command.startswith("/c;"):
+                if command.startswith("+"):
                     try:
                         parts = command.split(" ", 1)
-                        node_number = int(parts[0][3:])
+                        node_number = int(parts[0][1:].strip())
                         description = parts[1] if len(parts) > 1 else ""
                         if node_number in nodes:
-                            comments[node_number] = description
-                            print(f"Comment added to {nodes[node_number]}: {description}")
+                            comments[node_number].append(description)
+                            print(f"Added comment to {nodes[node_number]}: {description}")
                         else:
                             print("Invalid node number! Try again.")
                     except (ValueError, IndexError):
-                        print("Invalid comment format! Use /c; number description")
+                        print("Invalid format! Use +number comment to add a comment.")
                 
-                elif command.startswith("+/c;"):
+                elif command.startswith("-"):
                     try:
-                        parts = command.split(" ", 1)
-                        node_number = int(parts[0][4:])
-                        description = parts[1] if len(parts) > 1 else ""
-                        if node_number in nodes:
-                            comments[node_number] = comments.get(node_number, "") + " " + description
-                            print(f"Updated comment for {nodes[node_number]}: {comments[node_number]}")
+                        node_number = int(command[1:].strip())
+                        if node_number in nodes and comments[node_number]:
+                            print("\nComments for", nodes[node_number], ":")
+                            for idx, comment in enumerate(comments[node_number], start=1):
+                                print(f"{idx}: {comment}")
+                            
+                            comment_idx = int(input("Enter the number of the comment to remove: ").strip()) - 1
+                            if 0 <= comment_idx < len(comments[node_number]):
+                                removed_comment = comments[node_number].pop(comment_idx)
+                                print(f"Removed comment from {nodes[node_number]}: {removed_comment}")
+                            else:
+                                print("Invalid comment number! Try again.")
                         else:
-                            print("Invalid node number! Try again.")
-                    except (ValueError, IndexError):
-                        print("Invalid comment format! Use +/c; number description")
+                            print("No comments found for this title or invalid node number.")
+                    except ValueError:
+                        print("Invalid format! Use -number to remove a comment.")
         
         elif choice == "3":
             print("\nNow define connections between nodes by selecting their numbers.")
