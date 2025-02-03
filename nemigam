@@ -1,0 +1,8 @@
+digraph {
+	one [label=one]
+	two [label=two]
+	tree [label=tree]
+	one -> two
+	tree -> one
+	two -> two
+}

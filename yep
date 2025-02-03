@@ -1,0 +1,5 @@
+digraph {
+	salam [label=salam]
+	na [label=na]
+	salam -> na
+}
