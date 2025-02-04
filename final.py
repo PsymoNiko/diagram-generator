@@ -104,7 +104,7 @@ def create_diagram():
         elif choice == "5":
             for num, name in nodes.items():
                 comment_text = "\n".join(comments[num]) if comments[num] else ""
-                fig_title = Figlet(font='slant').renderText(name)
+                fig_title = colored(Figlet(font='slant').renderText(name), 'green')
                 dot.node(name, f"{fig_title}\n{comment_text}")
             
             image_name = input("Enter a filename (without extension, or press Enter for 'network_diagram'): ").strip()

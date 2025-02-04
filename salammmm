@@ -1,0 +1,6 @@
+digraph {
+	ali [label=ali]
+	mamad [label=mamad]
+	ali -> mamad
+	mamad -> mamad
+}
